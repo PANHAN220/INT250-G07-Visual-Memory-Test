@@ -52,6 +52,6 @@
 |:------------|-----------|-----------------|
 | 67130500019 | นายปภาณ บุญญกิจไมตรี | Interaction & Visual Effects, Router|
 | 67130500033 | นายวงศ์วริศ ตุ้มสุด | UI Design, Frontend Architecture |
-| 67130500038 | นายศักดิโชติ หาญเรืองเดช | Game Logic, Level System |
-| 67130500085 | นายธนพัฒน์ บุญรักษ์ | Vue Components, State Managemen |
+| 67130500038 | นายศักดิโชติ หาญเรืองเดช | Vue Components, State Management |
+| 67130500085 | นายธนพัฒน์ บุญรักษ์ | Game Logic, Level System |
 
