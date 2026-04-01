@@ -20,11 +20,12 @@
 
 **หน้าเริ่มต้น**
 
-<img width="735" height="687" alt="Screenshot 2026-04-01 214253" src="https://github.com/user-attachments/assets/1a1b8fe6-7642-49ee-976e-581efc4bbc40" />
+<img width="735" height="687" alt="Screenshot 2026-04-01 214253" src="https://github.com/user-attachments/assets/bf220e7f-0ba9-4da0-b4b2-d1ec3189ee9e" />
+
 
 **ระหว่างเล่น — Level 5 (Grid 4×4)**
 
-<img width="899" height="616" alt="Screenshot 2026-04-01 214149" src="https://github.com/user-attachments/assets/b3f951e5-8d01-4f08-8ab4-6e31c4507806" />
+<img width="899" height="616" alt="Screenshot 2026-04-01 214149" src="https://github.com/user-attachments/assets/3eab6a6e-0e8f-4f02-b843-24a7a1ee51eb" />
 
 
 ---
