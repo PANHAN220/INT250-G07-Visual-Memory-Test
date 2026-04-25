@@ -1,15 +1,3 @@
-<!-- <script setup>
-import Game from './views/Game.vue';
-import Home from './views/Home.vue';
-
-</script>
-
-<template>
-  <div class="text-red-700 font-bold " >hello world </div>
-  <Game/>
-
-  <Home/>
-</template> -->
 <script setup>
 import { ref } from 'vue'
 import Home from './views/Home.vue'
@@ -29,7 +17,17 @@ const showResult = (score) => {
 <template>
   <div class="min-h-screen w-full bg-gray-50 flex flex-col">
     <Home v-if="currentView === 'HOME'" @start="startGame" />
-    <Game v-else-if="currentView === 'GAME'" @game-over="showResult" />
-    <ResultView v-else-if="currentView === 'RESULT'" :score="finalScore" @restart="currentView = 'HOME'" />
+    
+    <Game 
+      v-else-if="currentView === 'GAME'" 
+      @game-over="showResult" 
+      @quit="currentView = 'HOME'" 
+    />
+    
+    <ResultView 
+      v-else-if="currentView === 'RESULT'" 
+      :score="finalScore" 
+      @restart="currentView = 'HOME'" 
+    />
   </div>
 </template>

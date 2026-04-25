@@ -1,22 +1,22 @@
 <script setup>
 import GridTile from './GridTile.vue'
-import { useMomeryGame } from '../../composables/useMemoryGame'
+import { useMemoryGame } from '../../composables/useMemoryGame'
 
 const {
   gridSize,
   gameState,
   pattern,
   userClicks,
+  lastWrongIndex,
   handleTileClick
 } = useMemoryGame()
-
 </script>
 
 <template>
-    <div class="bg-slate-800 p-4 rounded-xl max-w-md mx-auto">
+    <div class="w-[320px] sm:w-[400px] aspect-square flex items-center justify-center mx-auto">
         <div 
-        class="grid gap-3"
-        :style="{ gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))` }"
+            class="grid gap-3 w-full"
+            :style="{ gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))` }"
         >
             <GridTile
                 v-for="n in (gridSize * gridSize)"
@@ -24,6 +24,7 @@ const {
                 :is-pattern="pattern.includes(n - 1)"
                 :is-revealed="userClicks.includes(n - 1)"
                 :is-showing="gameState === 'SHOWING'"
+                :is-wrong="lastWrongIndex === (n - 1)"
                 @click-tile="handleTileClick(n - 1)"
             />
         </div>

@@ -1,9 +1,6 @@
 import { computed, ref } from 'vue'
 
-export function useMemoryGame() {
-
-    // defautl value 
-    const level = ref(1) 
+const level = ref(1) 
     const lives = ref(3)
     const gridSize = ref(3)
 
@@ -11,6 +8,12 @@ export function useMemoryGame() {
 
     const pattern = ref([]) 
     const userClicks = ref([])
+    const lastWrongIndex = ref(null)
+
+    const bestScore = ref(parseInt(localStorage.getItem('visual-memory-best')) || 0)
+
+export function useMemoryGame() {
+
 
     const totalTiles = computed(() => gridSize.value * gridSize.value)
 
@@ -20,7 +23,7 @@ export function useMemoryGame() {
     const generatePattern = () => {
         const newPattern = new Set()
         while (newPattern.size < patternLength.value) {
-            const randomIndex = Math.floor(Math.random() * totalTitles.value)
+            const randomIndex = Math.floor(Math.random() * totalTiles.value)
             newPattern.add(randomIndex)
         }
         pattern.value = Array.from(newPattern)
@@ -29,6 +32,8 @@ export function useMemoryGame() {
 
     const showPattern = () => {
         gameState.value = 'SHOWING'
+        userClicks.value = [] // ต้องเคลียร์การคลิกทุกครั้งที่โชว์ Pattern
+        lastWrongIndex.value = null
 
         setTimeout(() => {
             gameState.value = 'PLAYING'
@@ -37,7 +42,17 @@ export function useMemoryGame() {
 
     // Claer value and go to next level
     const nextLevel = () => {
-        userClicks.value = []
+        level.value++
+
+        if (level.value > bestScore.value) {
+            bestScore.value = level.value
+            localStorage.setItem('visual-memory-best', level.value)
+        }
+
+       if (level.value <= 2) gridSize.value = 3
+        else if (level.value <= 5) gridSize.value = 4
+        else gridSize.value = 5
+
         generatePattern()
         showPattern()
     }
@@ -47,12 +62,13 @@ export function useMemoryGame() {
         level.value = 1
         lives.value = 3 
         gridSize.value = 3 
-        nextLevel()
+        generatePattern()
+        showPattern()   
     }
 
     //function validation
     const handleTileClick = (index) => {
-        if (gameState.value !== 'PlAYING') return
+        if (gameState.value !== 'PLAYING') return
 
         if (pattern.value.includes(index)) {
             if (!userClicks.value.includes(index)) {
@@ -60,7 +76,6 @@ export function useMemoryGame() {
             }
 
             if (userClicks.value.length === pattern.value.length) {
-                level.value++
                 gameState.value = 'SHOWING'
                 setTimeout(nextLevel, 1000)
             }
@@ -68,8 +83,14 @@ export function useMemoryGame() {
 
         else {
             lives.value--
+            lastWrongIndex.value = index
+
             if (lives.value <= 0) {
                 gameState.value = 'GAMEOVER'
+            }
+            else {
+                gameState.value = 'SHOWING' 
+                setTimeout(showPattern, 1000)
             }
         }
     }
@@ -82,6 +103,8 @@ export function useMemoryGame() {
         gameState,
         pattern,
         userClicks,
+        lastWrongIndex,
+        bestScore,
         startGame,
         handleTileClick
     }

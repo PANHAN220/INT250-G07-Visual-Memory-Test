@@ -4,15 +4,18 @@ import { computed } from 'vue';
 const props = defineProps({
     isPattern: Boolean,
     isRevealed: Boolean,
-    isShowing: Boolean
+    isShowing: Boolean,
+    isWrong: Boolean
 })
 
-const emit = defineEmits(['clickTile'])
+const emit = defineEmits(['click-tile'])
 
 const titleClass = computed(() => {
-    if (props.isShowing && props.isPattern) return 'bg-bule-500 scale-105'
+    if ((props.isShowing && props.isPattern) || props.isRevealed) {
+        return 'bg-[#2573C1] scale-95 shadow-inner'
+    }
 
-    if (props.isRevealed) return 'bg-bule-500'
+    if (props.isWrong) return 'bg-red-500'
 
     return 'bg-white hover:bg-gray-400 cursor-pointer'
 })
@@ -20,7 +23,7 @@ const titleClass = computed(() => {
 
 <template>
     <div
-    @click="emit('clickTile')"
+    @click="emit('click-tile')"
     class="aspect-square rounded-lg transition-all duration-300 shadow-md"
     :class="titleClass"
     ></div>
