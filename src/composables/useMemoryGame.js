@@ -23,7 +23,7 @@ export function useMemoryGame() {
             const randomIndex = Math.floor(Math.random() * totalTitles.value)
             newPattern.add(randomIndex)
         }
-        pattern.add(randomIndex)
+        pattern.value = Array.from(newPattern)
     }
 
 
