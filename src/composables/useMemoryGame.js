@@ -1,9 +1,6 @@
 import { computed, ref } from 'vue'
 
-export function useMemoryGame() {
-
-    // default value 
-    const level = ref(1) 
+const level = ref(1) 
     const lives = ref(3)
     const gridSize = ref(3)
 
@@ -11,6 +8,12 @@ export function useMemoryGame() {
 
     const pattern = ref([]) 
     const userClicks = ref([])
+    const lastWrongIndex = ref(null)
+
+    const bestScore = ref(parseInt(localStorage.getItem('visual-memory-best')) || 0)
+
+export function useMemoryGame() {
+
 
     const totalTiles = computed(() => gridSize.value * gridSize.value)
 
@@ -25,10 +28,13 @@ export function useMemoryGame() {
         }
         pattern.value = Array.from(newPattern)
     }
+    
 
 
     const showPattern = () => {
         gameState.value = 'SHOWING'
+        userClicks.value = [] 
+        lastWrongIndex.value = null
 
         setTimeout(() => {
             gameState.value = 'PLAYING'
@@ -37,22 +43,42 @@ export function useMemoryGame() {
 
     // Clear value and go to next level
     const nextLevel = () => {
-        userClicks.value = []
+        level.value++
+
+        if (level.value > bestScore.value) {
+            bestScore.value = level.value
+            localStorage.setItem('visual-memory-best', level.value)
+        }
+
+       if (level.value <= 2) gridSize.value = 3
+        else if (level.value <= 5) gridSize.value = 4
+        else gridSize.value = 5
+
         generatePattern()
         showPattern()
     }
 
     //play again
     const startGame = () => {
+        if (gameState.value === 'VICTORY') {
+            resetBestScore()
+        }
+
         level.value = 1
         lives.value = 3 
         gridSize.value = 3 
-        nextLevel()
+        generatePattern()
+        showPattern()   
+    }
+
+    const resetBestScore = () => {
+        bestScore.value = 1 
+        localStorage.removeItem('visual-memory-best') 
     }
 
     //function validation
     const handleTileClick = (index) => {
-        if (gameState.value !== 'PlAYING') return
+        if (gameState.value !== 'PLAYING') return
 
         if (pattern.value.includes(index)) {
             if (!userClicks.value.includes(index)) {
@@ -60,16 +86,26 @@ export function useMemoryGame() {
             }
 
             if (userClicks.value.length === pattern.value.length) {
-                level.value++
-                gameState.value = 'SHOWING'
-                setTimeout(nextLevel, 1000)
+                
+                if (level.value === 10) {
+                    gameState.value = 'VICTORY'
+                } else {
+                    gameState.value = 'SHOWING'
+                    setTimeout(nextLevel, 1000)
+                }
             }
         }
 
         else {
             lives.value--
+            lastWrongIndex.value = index
+
             if (lives.value <= 0) {
                 gameState.value = 'GAMEOVER'
+            }
+            else {
+                gameState.value = 'SHOWING' 
+                setTimeout(showPattern, 1000)
             }
         }
     }
@@ -82,7 +118,10 @@ export function useMemoryGame() {
         gameState,
         pattern,
         userClicks,
+        lastWrongIndex,
+        bestScore,
         startGame,
-        handleTileClick
+        handleTileClick,
+        resetBestScore
     }
 }
