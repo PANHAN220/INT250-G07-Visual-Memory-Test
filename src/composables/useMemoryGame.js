@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 
 export function useMemoryGame() {
 
-    // defautl value 
+    // default value 
     const level = ref(1) 
     const lives = ref(3)
     const gridSize = ref(3)
@@ -20,7 +20,7 @@ export function useMemoryGame() {
     const generatePattern = () => {
         const newPattern = new Set()
         while (newPattern.size < patternLength.value) {
-            const randomIndex = Math.floor(Math.random() * totalTitles.value)
+            const randomIndex = Math.floor(Math.random() * totalTiles.value)
             newPattern.add(randomIndex)
         }
         pattern.value = Array.from(newPattern)
@@ -35,14 +35,14 @@ export function useMemoryGame() {
         }, 1500)
     }
 
-    // Claer value and go to next level
+    // Clear value and go to next level
     const nextLevel = () => {
         userClicks.value = []
         generatePattern()
         showPattern()
     }
 
-    //paly agin
+    //play again
     const startGame = () => {
         level.value = 1
         lives.value = 3 

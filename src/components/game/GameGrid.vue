@@ -1,6 +1,6 @@
 <script setup>
-import GridTile from './GridTile.vue'
-import { useMomeryGame } from '../../composables/useMemoryGame'
+import GameTile from './GridTile.vue'
+import { useMemoryGame } from '../../composables/useMemoryGame'
 
 const {
   gridSize,
