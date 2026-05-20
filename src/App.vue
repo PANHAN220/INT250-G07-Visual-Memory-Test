@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import Home from './views/Home.vue'
 import Game from './views/Game.vue'
-import ResultView from './views/ResultView.vue'
 
 const currentView = ref('HOME')
 const finalScore = ref(1)
